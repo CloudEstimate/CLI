@@ -1,0 +1,68 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+venv/
+.env/
+env/
+.venv/
+
+# Setup-generated files
+build/
+dist/
+*.egg-info/
+
+# Python Package files
+*.egg
+*.eggs
+
+# pytest cache
+.pytest_cache/
+.cache/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Logs and temporary files
+*.log
+*.temp
+*.tmp
+*.swp
+*.swo
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# IDE settings and environment settings
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Mac OS generated files
+.DS_Store
+
+# Ignore pipenv and poetry lock files
+Pipfile.lock
+poetry.lock
+
+# Ignore pyenv and pipenv files
+.python-version
+
+# Ignore local config and secrets
+config.json
+secrets.json
+
+# Ignore cloudestimate-generated files
+*.db
