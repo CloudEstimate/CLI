@@ -1,0 +1,31 @@
+{
+    "aws": {
+      "regions": {
+        "us-east-1": {
+          "ec2": {
+            "c5.2xlarge": 0.46
+          },
+          "ebs": {
+            "general_purpose_ssd": 0.10
+          }
+        }
+      }
+    },
+    "gcp": {
+      "regions": {
+        "us-east1": {
+          "n1-standard-8": 0.3792,
+          "persistent_ssd": 0.17
+        }
+      }
+    },
+    "azure": {
+      "regions": {
+        "East US": {
+          "F8s_v2": 0.376,
+          "ssd": 0.10
+        }
+      }
+    }
+  }
+  

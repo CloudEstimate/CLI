@@ -1,0 +1,63 @@
+software:
+  name: GitLab
+  description: Self-managed GitLab instance with CI/CD capabilities.
+  as_of: '2024-09-20'
+  components:
+    fixed_components:
+      - name: Primary Compute Unit
+        type: compute
+        description: Handles core GitLab services like the web interface, API, and database.
+        compute_requirements:
+          vcpu: 8
+          memory_gb: 16
+          storage_gb: 200
+          region: us-east
+        csp_requirements:
+          gcp:
+            machine_type: 'n1-standard-8'
+            region: 'us-east1'
+          aws:
+            instance_type: 'c5.2xlarge'
+            region: 'us-east-1'
+          azure:
+            vm_size: 'F8s_v2'
+            region: 'East US'
+        implementation: VM
+    variable_components:
+      name: CI/CD Runners
+      type: variable-compute
+      description: Handles CI/CD jobs and scales based on user inputs.
+      user_inputs:
+        users: 1000
+        workload: medium
+        activity: moderate
+      scaling_behavior: autoscale
+      usage_profiles:
+        medium:
+          light:
+            average_vcpu_per_user: 0.025
+            average_memory_per_user_gb: 0.125
+            storage_per_user_gb: 2.5
+          moderate:
+            average_vcpu_per_user: 0.05
+            average_memory_per_user_gb: 0.25
+            storage_per_user_gb: 5
+          heavy:
+            average_vcpu_per_user: 0.075
+            average_memory_per_user_gb: 0.375
+            storage_per_user_gb: 7.5
+      resource_formula:
+        total_vcpu: 'users * average_vcpu_per_user'
+        total_memory_gb: 'users * average_memory_per_user_gb'
+        total_storage_gb: 'users * storage_per_user_gb'
+      csp_requirements:
+        gcp:
+          machine_type: 'n1-standard-8'
+          region: 'us-east1'
+        aws:
+          instance_type: 'c5.2xlarge'
+          region: 'us-east-1'
+        azure:
+          vm_size: 'F8s_v2'
+          region: 'East US'
+      implementation: VM
