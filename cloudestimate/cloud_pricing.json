@@ -3,10 +3,10 @@
       "regions": {
         "us-east-1": {
           "ec2": {
-            "c5.2xlarge": 0.46
+            "c5.2xlarge": 1.32
           },
           "ebs": {
-            "general_purpose_ssd": 0.10
+            "general_purpose_ssd": 0.1
           }
         }
       }

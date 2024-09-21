@@ -35,17 +35,17 @@ software:
       usage_profiles:
         medium:
           light:
-            average_vcpu_per_user: 0.025
-            average_memory_per_user_gb: 0.125
-            storage_per_user_gb: 2.5
+            average_vcpu_per_user: 0.008
+            average_memory_per_user_gb: 0.04
+            storage_per_user_gb: 2
           moderate:
-            average_vcpu_per_user: 0.05
-            average_memory_per_user_gb: 0.25
-            storage_per_user_gb: 5
+            average_vcpu_per_user: 0.016
+            average_memory_per_user_gb: 0.08 
+            storage_per_user_gb: 4 
           heavy:
-            average_vcpu_per_user: 0.075
-            average_memory_per_user_gb: 0.375
-            storage_per_user_gb: 7.5
+            average_vcpu_per_user: 0.024
+            average_memory_per_user_gb: 0.12
+            storage_per_user_gb: 6
       resource_formula:
         total_vcpu: 'users * average_vcpu_per_user'
         total_memory_gb: 'users * average_memory_per_user_gb'
