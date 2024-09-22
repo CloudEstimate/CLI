@@ -1,64 +1,51 @@
-import os
-import json
 import click
 from cloudestimate.loaders.yaml_loader import load_software_config
+from cloudestimate.calculations import calculate_total_resources, calculate_cloud_costs
+import os
+from datetime import datetime
 
 @click.command()
 @click.argument('software_name')
-@click.option('--users', required=True, type=int, help='Number of users')
-@click.option('--workload', required=True, type=click.Choice(['simple', 'medium', 'complex']), help='Workload complexity')
-@click.option('--activity', required=True, type=click.Choice(['light', 'moderate', 'heavy']), help='User activity level')
-def cli(software_name, users, workload, activity):
+@click.option('--users', default=1000, help='Number of users or agents')
+@click.option('--workload', default='medium', help='Workload type (simple, medium, complex)')
+@click.option('--activity', default='moderate', help='Activity level (light, moderate, heavy)')
+@click.option('--show-resources', is_flag=True, help='Show detailed resource usage (vCPU, memory, storage)')
+def cli(software_name, users, workload, activity, show_resources):
+    """
+    CLI tool for estimating cloud costs for self-managed/hosted software across AWS, GCP, and Azure.
+    """
     try:
-        # Load the configuration file for the specified software
-        config = load_software_config(software_name)
+        # Load the software configuration
+        software_config = load_software_config(software_name)
 
-        # Calculate total resources
-        components = config.get('software', {}).get('components', {})
-        variable_components = components.get('variable_components', {})
-        usage_profiles = variable_components.get('usage_profiles', {})
-        scaling_profile = usage_profiles.get(workload, {}).get(activity, {})
-        
-        total_vcpu = scaling_profile.get('average_vcpu_per_user', 0) * users
-        total_memory_gb = scaling_profile.get('average_memory_per_user_gb', 0) * users
-        total_storage_gb = scaling_profile.get('storage_per_user_gb', 0) * users
+        # Calculate total resources based on inputs
+        total_vcpu, total_memory, total_storage = calculate_total_resources(software_config, users, workload, activity)
 
-        click.echo(f"\nTotal estimated resources for {users} users, {workload} workload, {activity} activity:")
-        click.echo(f"  vCPU: {total_vcpu}")
-        click.echo(f"  Memory: {total_memory_gb} GB")
-        click.echo(f"  Storage: {total_storage_gb} GB")
+        # Show resource usage if requested
+        if show_resources:
+            click.echo(f"\nTotal estimated resources for {users} users, {workload} workload, {activity} activity:")
+            click.echo(f"  vCPU: {total_vcpu}")
+            click.echo(f"  Memory: {total_memory} GB")
+            click.echo(f"  Storage: {total_storage} GB")
 
-        # Use current working directory for cloud_pricing.json
-        pricing_file_path = os.path.join(os.getcwd(), 'cloudestimate/cloud_pricing.json')
+        # Get cost estimates for AWS, GCP, and Azure
+        click.echo(f"\nEstimated Annual Cloud Costs for {software_name}:")
+        for provider in ['aws', 'gcp', 'azure']:
+            costs = calculate_cloud_costs(total_vcpu, total_storage, provider)
+            click.echo(f"  {provider.upper()}: ${format(costs['total_cost'], ',.2f')} USD per year")
 
-        # Load pricing data from the pre-scraped JSON file
-        with open(pricing_file_path, 'r') as pricing_file:
-            pricing_data = json.load(pricing_file)
+        # Pricing data "as of" date
+        pricing_file = os.path.join(os.getcwd(), 'cloudestimate', 'cloud_pricing', f'{provider}_pricing.json')
+        if os.path.exists(pricing_file):
+            as_of_date = datetime.fromtimestamp(os.path.getmtime(pricing_file)).strftime('%Y-%m-%d')
+            click.echo(f"\nPrices are based on data as of {as_of_date}.")
 
-        # Example: Fetch AWS pricing from JSON
-        region = 'us-east-1'
-        instance_type = 'c5.2xlarge'
-        ec2_price_per_hour = pricing_data['aws']['regions'][region]['ec2'].get(instance_type, 'N/A')
-        ebs_price_per_gb_month = pricing_data['aws']['regions'][region]['ebs'].get('general_purpose_ssd', 'N/A')
+        # Disclaimer
+        click.echo("\nDisclaimer: This is just an estimate and actual costs may vary based on factors such as discounts, reserved instances, and real-world usage patterns.")
+        click.echo("\nPowered by CloudEstimate - an Open Source Cloud Cost Estimation Tool")
 
-        # Calculate annual estimated costs
-        if ec2_price_per_hour != 'N/A' and ebs_price_per_gb_month != 'N/A':
-            # For simplicity, assume 730 hours/month
-            ec2_annual_cost = total_vcpu * ec2_price_per_hour * 730 * 12
-            ebs_annual_cost = total_storage_gb * ebs_price_per_gb_month * 12
-            total_annual_cost = ec2_annual_cost + ebs_annual_cost
-
-            click.echo(f"\nAnnual estimated cost (AWS, {region}):")
-            click.echo(f"  EC2 (vCPU): ${ec2_annual_cost:,.2f} per year")
-            click.echo(f"  EBS (Storage): ${ebs_annual_cost:,.2f} per year")
-            click.echo(f"  Total Annual Cost: ${total_annual_cost:,.2f} per year")
-        else:
-            click.echo("\nPricing information not available for the specified region and instance type.")
-
-        # Add a disclaimer
-        click.echo("\nDisclaimer: This is just an estimate and actual costs may vary based on factors such as discounts, "
-                   "reserved instances, and real-world usage patterns.")
-
+    except FileNotFoundError as e:
+        click.echo(f"Error: {e}")
     except Exception as e:
         click.echo(f"Error: {str(e)}")
 

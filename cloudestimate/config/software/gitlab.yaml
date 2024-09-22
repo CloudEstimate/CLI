@@ -1,63 +1,32 @@
 software:
-  name: GitLab
-  description: Self-managed GitLab instance with CI/CD capabilities.
-  as_of: '2024-09-20'
-  components:
-    fixed_components:
-      - name: Primary Compute Unit
-        type: compute
-        description: Handles core GitLab services like the web interface, API, and database.
-        compute_requirements:
-          vcpu: 8
-          memory_gb: 16
-          storage_gb: 200
-          region: us-east
-        csp_requirements:
-          gcp:
-            machine_type: 'n1-standard-8'
-            region: 'us-east1'
-          aws:
-            instance_type: 'c5.2xlarge'
-            region: 'us-east-1'
-          azure:
-            vm_size: 'F8s_v2'
-            region: 'East US'
-        implementation: VM
-    variable_components:
-      name: CI/CD Runners
-      type: variable-compute
-      description: Handles CI/CD jobs and scales based on user inputs.
+  name: "GitLab"
+  description: "Self-managed GitLab instance with CI/CD capabilities."
+  fixed_components:
+    - name: "Primary Compute Unit"
+      type: "compute"
+      compute_requirements:
+        vcpu: 8  # Fixed to match the GitLab recommendation
+        memory_gb: 16  # Memory per GitLab recommendation
+        storage_gb: 500  # Increased to handle repositories and data
+
+  variable_components:
+    - name: "CI/CD Runners"
+      type: "variable-compute"
       user_inputs:
         users: 1000
-        workload: medium
-        activity: moderate
-      scaling_behavior: autoscale
+        workload: "medium"
+        activity: "moderate"
       usage_profiles:
         medium:
           light:
-            average_vcpu_per_user: 0.008
-            average_memory_per_user_gb: 0.04
-            storage_per_user_gb: 2
+            average_vcpu_per_user: 0.03  # Adjusted to reflect CI/CD resource usage
+            average_memory_per_user_gb: 0.1
+            storage_per_user_gb: 5
           moderate:
-            average_vcpu_per_user: 0.016
-            average_memory_per_user_gb: 0.08 
-            storage_per_user_gb: 4 
+            average_vcpu_per_user: 0.05  # Adjusted based on GitLab's actual architecture
+            average_memory_per_user_gb: 0.2
+            storage_per_user_gb: 10
           heavy:
-            average_vcpu_per_user: 0.024
-            average_memory_per_user_gb: 0.12
-            storage_per_user_gb: 6
-      resource_formula:
-        total_vcpu: 'users * average_vcpu_per_user'
-        total_memory_gb: 'users * average_memory_per_user_gb'
-        total_storage_gb: 'users * storage_per_user_gb'
-      csp_requirements:
-        gcp:
-          machine_type: 'n1-standard-8'
-          region: 'us-east1'
-        aws:
-          instance_type: 'c5.2xlarge'
-          region: 'us-east-1'
-        azure:
-          vm_size: 'F8s_v2'
-          region: 'East US'
-      implementation: VM
+            average_vcpu_per_user: 0.1
+            average_memory_per_user_gb: 0.5
+            storage_per_user_gb: 15

@@ -1,0 +1,8 @@
+{
+  "ec2": {
+    "c5.2xlarge": 0.34
+  },
+  "ebs": {
+    "general_purpose_ssd": 0.10
+  }
+}

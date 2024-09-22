@@ -1,0 +1,31 @@
+software:
+  name: "Windows Server"
+  description: "Windows Server for enterprise-grade and Windows-based workloads."
+  fixed_components:
+    - name: "Primary Compute Unit"
+      type: "compute"
+      compute_requirements:
+        vcpu: 8
+        memory_gb: 32
+        storage_gb: 200
+  variable_components:
+    - name: "Additional Load"
+      type: "variable-compute"
+      user_inputs:
+        users: 1000
+        workload: "medium"
+        activity: "moderate"
+      usage_profiles:
+        medium:
+          light:
+            average_vcpu_per_user: 0.04
+            average_memory_per_user_gb: 0.2
+            storage_per_user_gb: 10
+          moderate:
+            average_vcpu_per_user: 0.08
+            average_memory_per_user_gb: 0.4
+            storage_per_user_gb: 20
+          heavy:
+            average_vcpu_per_user: 0.16
+            average_memory_per_user_gb: 0.8
+            storage_per_user_gb: 30

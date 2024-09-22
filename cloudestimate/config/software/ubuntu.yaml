@@ -1,0 +1,31 @@
+software:
+  name: "Ubuntu"
+  description: "General-purpose Ubuntu Server for development and production workloads."
+  fixed_components:
+    - name: "Primary Compute Unit"
+      type: "compute"
+      compute_requirements:
+        vcpu: 4
+        memory_gb: 16
+        storage_gb: 100
+  variable_components:
+    - name: "Additional Load"
+      type: "variable-compute"
+      user_inputs:
+        users: 1000
+        workload: "medium"
+        activity: "moderate"
+      usage_profiles:
+        medium:
+          light:
+            average_vcpu_per_user: 0.02
+            average_memory_per_user_gb: 0.1
+            storage_per_user_gb: 5
+          moderate:
+            average_vcpu_per_user: 0.04
+            average_memory_per_user_gb: 0.2
+            storage_per_user_gb: 10
+          heavy:
+            average_vcpu_per_user: 0.08
+            average_memory_per_user_gb: 0.4
+            storage_per_user_gb: 20
