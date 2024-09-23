@@ -1,6 +1,6 @@
 software:
   name: "Debian"
-  description: "Debian OS for general-purpose and server workloads."
+  description: "Debian Linux OS for cloud and server environments."
   fixed_components:
     - name: "Primary Compute Unit"
       type: "compute"
@@ -8,24 +8,15 @@ software:
         vcpu: 4
         memory_gb: 16
         storage_gb: 100
-  variable_components:
-    - name: "Additional Load"
-      type: "variable-compute"
-      user_inputs:
-        users: 1000
-        workload: "medium"
-        activity: "moderate"
-      usage_profiles:
-        medium:
-          light:
-            average_vcpu_per_user: 0.02
-            average_memory_per_user_gb: 0.1
-            storage_per_user_gb: 5
-          moderate:
-            average_vcpu_per_user: 0.04
-            average_memory_per_user_gb: 0.2
-            storage_per_user_gb: 10
-          heavy:
-            average_vcpu_per_user: 0.08
-            average_memory_per_user_gb: 0.4
-            storage_per_user_gb: 20
+      cloud_skus:
+        aws: "m5.xlarge"
+        gcp: "n1-standard-4"
+        azure: "D4s_v3"
+    - name: "Storage"
+      type: "storage"
+      storage_requirements:
+        storage_gb: 100
+      cloud_skus:
+        aws: "general_purpose_ssd"
+        gcp: "standard_persistent_disk"
+        azure: "standard_persistent_disk"

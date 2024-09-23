@@ -1,13 +1,26 @@
 software:
   name: "GitLab"
   description: "Self-managed GitLab instance with CI/CD capabilities."
+  
   fixed_components:
     - name: "Primary Compute Unit"
       type: "compute"
       compute_requirements:
-        vcpu: 8  # Fixed to match the GitLab recommendation
-        memory_gb: 16  # Memory per GitLab recommendation
-        storage_gb: 500  # Increased to handle repositories and data
+        vcpu: 8
+        memory_gb: 16
+        storage_gb: 500
+      cloud_skus:
+        aws: "c5.2xlarge"
+        gcp: "n1-standard-8"
+        azure: "F8s_v2"
+    - name: "Storage"
+      type: "storage"
+      storage_requirements:
+        storage_gb: 500
+      cloud_skus:
+        aws: "general_purpose_ssd"
+        gcp: "ssd_persistent_disk"
+        azure: "ssd_persistent_disk"
 
   variable_components:
     - name: "CI/CD Runners"
@@ -17,16 +30,44 @@ software:
         workload: "medium"
         activity: "moderate"
       usage_profiles:
+        simple:
+          light:
+            average_vcpu_per_user: 0.01
+            average_memory_per_user_gb: 0.05
+            storage_per_user_gb: 2
+          moderate:
+            average_vcpu_per_user: 0.02
+            average_memory_per_user_gb: 0.1
+            storage_per_user_gb: 5
+          heavy:
+            average_vcpu_per_user: 0.04
+            average_memory_per_user_gb: 0.2
+            storage_per_user_gb: 10
+
         medium:
           light:
-            average_vcpu_per_user: 0.03  # Adjusted to reflect CI/CD resource usage
+            average_vcpu_per_user: 0.02
             average_memory_per_user_gb: 0.1
             storage_per_user_gb: 5
           moderate:
-            average_vcpu_per_user: 0.05  # Adjusted based on GitLab's actual architecture
+            average_vcpu_per_user: 0.04
             average_memory_per_user_gb: 0.2
             storage_per_user_gb: 10
           heavy:
+            average_vcpu_per_user: 0.08
+            average_memory_per_user_gb: 0.4
+            storage_per_user_gb: 20
+
+        complex:
+          light:
+            average_vcpu_per_user: 0.05
+            average_memory_per_user_gb: 0.25
+            storage_per_user_gb: 10
+          moderate:
             average_vcpu_per_user: 0.1
             average_memory_per_user_gb: 0.5
-            storage_per_user_gb: 15
+            storage_per_user_gb: 20
+          heavy:
+            average_vcpu_per_user: 0.2
+            average_memory_per_user_gb: 1
+            storage_per_user_gb: 40

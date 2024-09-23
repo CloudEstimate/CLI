@@ -1,8 +1,16 @@
 {
   "compute": {
-    "n1-standard-8": 0.38
+    "n1-standard-4": 0.131,
+    "n1-standard-8": 0.262,
+    "g2-standard-4": 0.7068,
+    "n2-standard-4": 0.171,
+    "c2-standard-16": 0.693,
+    "n2d-standard-4": 0.153,
+    "n2-standard-8": 0.342
   },
   "storage": {
-    "persistent_ssd": 0.17
+    "standard_persistent_disk": 0.04,
+    "ssd_persistent_disk": 0.17,
+    "balanced_persistent_disk": 0.10
   }
 }

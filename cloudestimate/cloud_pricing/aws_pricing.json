@@ -1,8 +1,16 @@
 {
-  "ec2": {
+  "compute": {
+    "m5.xlarge": 0.192,
+    "m5.2xlarge": 0.384,
+    "g4dn.xlarge": 0.526,
+    "c5.xlarge": 0.17,
+    "c5.4xlarge": 0.68,
+    "t3a.xlarge": 0.1256,
     "c5.2xlarge": 0.34
   },
-  "ebs": {
-    "general_purpose_ssd": 0.10
+  "storage": {
+    "general_purpose_ssd": 0.08,
+    "standard_persistent_disk": 0.045,
+    "balanced_persistent_disk": 0.125
   }
 }

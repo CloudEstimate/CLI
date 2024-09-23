@@ -1,8 +1,15 @@
 {
   "compute": {
+    "D4s_v3": 0.152,
+    "D8s_v3": 0.304,
+    "NC4as_T4_v3": 0.90,
+    "F16s_v2": 0.611,
+    "D4as_v4": 0.148,
     "F8s_v2": 0.338
   },
   "storage": {
-    "ssd": 0.10
+    "standard_persistent_disk": 0.03,
+    "ssd_persistent_disk": 0.15,
+    "balanced_persistent_disk": 0.10
   }
 }
