@@ -1,0 +1,89 @@
+software:
+  name: "Nvidia GPU"
+  description: "Nvidia GPU instance for AI/ML workloads."
+  fixed_components:
+    - name: "Primary Compute Unit"
+      type: "compute"
+      compute_requirements:
+        vcpu: 4
+        memory_gb: 16
+        storage_gb: 128
+      cloud_skus:
+        aws: "g4dn.xlarge"
+        gcp: "g2-standard-4"
+        azure: "NC4as_T4_v3"
+    - name: "Storage"
+      type: "storage"
+      storage_requirements:
+        storage_gb: 128
+      cloud_skus:
+        aws: "general_purpose_ssd"
+        gcp: "ssd_persistent_disk"
+        azure: "ssd_persistent_disk"
+
+  gpu_requirements:
+    - name: "GPU Resources"
+      gpu_requirements:
+        gpu_count: 1
+        gpu_memory_gb: 16
+      cloud_skus:
+        aws: "g4dn.xlarge"
+        gcp: "g2-standard-4"
+        azure: "NC4as_T4_v3"
+
+  variable_components:
+    - name: "AI/ML Jobs"
+      type: "variable-compute"
+      user_inputs:
+        users: 1000
+        workload: "medium"
+        activity: "moderate"
+      usage_profiles:
+        simple:
+          light:
+            average_vcpu_per_user: 0.01
+            average_memory_per_user_gb: 0.05
+            storage_per_user_gb: 2
+            average_gpu_per_user: 0.01
+          moderate:
+            average_vcpu_per_user: 0.02
+            average_memory_per_user_gb: 0.1
+            storage_per_user_gb: 5
+            average_gpu_per_user: 0.02
+          heavy:
+            average_vcpu_per_user: 0.04
+            average_memory_per_user_gb: 0.2
+            storage_per_user_gb: 10
+            average_gpu_per_user: 0.04
+        medium:
+          light:
+            average_vcpu_per_user: 0.02
+            average_memory_per_user_gb: 0.1
+            storage_per_user_gb: 5
+            average_gpu_per_user: 0.02
+          moderate:
+            average_vcpu_per_user: 0.04
+            average_memory_per_user_gb: 0.2
+            storage_per_user_gb: 10
+            average_gpu_per_user: 0.04
+          heavy:
+            average_vcpu_per_user: 0.08
+            average_memory_per_user_gb: 0.4
+            storage_per_user_gb: 20
+            average_gpu_per_user: 0.08
+        complex:
+          light:
+            average_vcpu_per_user: 0.05
+            average_memory_per_user_gb: 0.25
+            storage_per_user_gb: 10
+            average_gpu_per_user: 0.05
+          moderate:
+            average_vcpu_per_user: 0.1
+            average_memory_per_user_gb: 0.5
+            storage_per_user_gb: 20
+            average_gpu_per_user: 0.1
+          heavy:
+            average_vcpu_per_user: 0.2
+            average_memory_per_user_gb: 1
+            storage_per_user_gb: 40
+            average_gpu_per_user: 0.2

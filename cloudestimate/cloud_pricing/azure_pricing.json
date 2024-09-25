@@ -7,6 +7,9 @@
     "D4as_v4": 0.148,
     "F8s_v2": 0.338
   },
+  "gpu": {
+    "NC4as_T4_v3": 0.9
+  },
   "storage": {
     "standard_persistent_disk": 0.03,
     "ssd_persistent_disk": 0.15,

@@ -8,6 +8,9 @@
     "n2d-standard-4": 0.153,
     "n2-standard-8": 0.342
   },
+  "gpu": {
+    "nvidia-t4": 0.35 
+  },
   "storage": {
     "standard_persistent_disk": 0.04,
     "ssd_persistent_disk": 0.17,
