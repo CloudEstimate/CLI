@@ -1,97 +1,61 @@
-# CloudEstimate CLI
+# CloudEstimate
 
-**CloudEstimate** is an open-source CLI tool designed to estimate the annual cloud cost for self-managed/hosted software across multiple cloud service providers (CSPs), including AWS, GCP, and Azure. The tool helps users calculate cloud infrastructure costs based on the number of users, workload complexity, and activity level.
+**CloudEstimate** is an open-source CLI tool designed to help you estimate cloud costs for self-hosted software deployments. Whether you're managing your own GitLab, Nvidia, or other software setups on AWS, GCP, or Azure, CloudEstimate provides a fast and straightforward way to calculate potential cloud expenses.
 
-## Features
+## Key Features
 
--   **Cloud Service Providers Supported**:
-    
-    -   **AWS**
-    -   **Google Cloud (GCP)**
-    -   **Microsoft Azure**
--   **Supported Software in this Version**:
-    
-    -   **GitLab**
-    -   **Ubuntu**
-    -   **Debian**
-    -   **Red Hat Enterprise Linux (RHEL)**
-    -   **Windows Server**
--   **Key Features**:
-    
-    -   Provides cloud cost estimates based on user count, workload complexity, and activity level.
-    -   Optionally shows detailed resource usage (vCPU, memory, and storage).
-    -   Cost estimates include compute (vCPU) and storage across AWS, GCP, and Azure.
-    -   Flexible YAML configurations for each software, easily extendable for additional software.
+-   Supports multiple cloud providers (AWS, GCP, Azure).
+-   Estimates cloud costs based on CPU, memory, storage, and GPU usage.
+-   Built-in configurations for common software like GitLab, Nvidia, and more.
+-   Extensible through custom YAML configurations for other software.
 
 ## Installation
 
-Clone the repository and install the required dependencies:
+To get started with CloudEstimate, clone the repository and set up a virtual environment:
 
     git clone https://github.com/CloudEstimate/CLI.git
     cd CLI
+    python3 -m venv .venv
+    source .venv/bin/activate
     pip install -r requirements.txt 
 
 ## Usage
 
-Run the CLI tool to estimate cloud costs:
+You can estimate cloud costs using a simple CLI command. For example, to estimate the cost for deploying GitLab for 1000 users with a medium workload:
 
-    cloudestimate <software_name> --users <number_of_users> --workload <workload_type> --activity <activity_level>
+    cloudestimate gitlab --users 1000 --workload medium --activity moderate 
 
-### Example:
+### Example Output
 
-    cloudestimate gitlab --users 1000 --workload medium --activity moderate
+    Estimated Annual Cloud Costs for GitLab (AWS):
+      Compute: $80,732.16 USD per year
+      Storage: $13,200.00 USD per year
+      Total: $93,932.16 USD per year 
 
-### Options:
+## Supported Software
 
--   `--users`: The number of users or agents (default: 1000).
--   `--workload`: The type of workload: `simple`, `medium`, or `complex`.
--   `--activity`: The activity level: `light`, `moderate`, or `heavy`.
--   `--show-resources`: Option to display detailed resource usage (vCPU, memory, storage).
+-   **GitLab** – Fully configurable for CI/CD runners.
+-   **Nvidia** – Includes GPU and memory pricing for high-performance workloads.
+-   **Ubuntu, RHEL, Debian, Windows Server** – Default configurations for common OS deployments.
 
-### Example with resource display:
+## How It Works
 
-    cloudestimate ubuntu --users 500 --workload medium --activity moderate --show-resources
+CloudEstimate leverages YAML configuration files for each software package, making it easy to update or extend the tool for new software. The tool supports fixed and variable resource requirements, as well as GPU pricing.
 
-## YAML Configurations
+### Pricing Sources
 
-Each supported software has its own YAML file defining its resource requirements. These YAML files are stored in the `config/software` directory.
-
-Example `gitlab.yaml` configuration:
-
-    software:
-      name: "GitLab"
-      description: "Self-managed GitLab instance with CI/CD capabilities."
-      fixed_components:
-        - name: "Primary Compute Unit"
-          type: "compute"
-          compute_requirements:
-            vcpu: 8
-            memory_gb: 16
-            storage_gb: 500
-      variable_components:
-        - name: "CI/CD Runners"
-          type: "variable-compute"
-          user_inputs:
-            users: 1000
-            workload: "medium"
-            activity: "moderate"
-          usage_profiles:
-            medium:
-              moderate:
-                average_vcpu_per_user: 0.05
-                average_memory_per_user_gb: 0.2
-                storage_per_user_gb: 10
-
-You can modify these YAML files or create new ones to support additional software.
-
-## License
-
-CloudEstimate is licensed under the **MIT License**.
+-   AWS: Uses on-demand pricing for compute, storage, and GPU resources.
+-   GCP: Reflects current prices for standard and GPU-enabled instances.
+-   Azure: Includes pricing for standard and specialized VM instances.
 
 ## Contributing
 
-Contributions are welcome! Please check the `CONTRIBUTING.md` file for guidelines.
+Contributions are welcome! If you’d like to add new software configurations, improve cloud pricing, or refine the tool, please check out the `CONTRIBUTING.md` for guidelines.
 
-## Disclaimer
+## License
 
-This is just an estimate, and actual costs may vary based on factors such as discounts, reserved instances, and real-world usage patterns.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Maintainer
+
+CloudEstimate was created and is maintained by [Regnard Raquedan](https://github.com/regnardraquedan). Feel free to reach out if you have any questions or feedback.
