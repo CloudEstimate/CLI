@@ -1,22 +1,32 @@
 software:
-  name: "Debian"
-  description: "Debian Linux OS for cloud and server environments."
+  name: "Debian Web Server"
+  description: "Deployment of a Debian-based web server."
+
   fixed_components:
-    - name: "Primary Compute Unit"
+    - name: "Web Server Instance"
       type: "compute"
       compute_requirements:
-        vcpu: 4
-        memory_gb: 16
-        storage_gb: 100
+        vcpu: 2
+        memory_gb: 4
+        storage_gb: 50
       cloud_skus:
-        aws: "m5.xlarge"
-        gcp: "n1-standard-4"
-        azure: "D4s_v3"
+        aws: "t3a.large"
+        gcp: "n1-standard-2"
+        azure: "B2s"
     - name: "Storage"
       type: "storage"
       storage_requirements:
-        storage_gb: 100
+        storage_gb: 50
       cloud_skus:
-        aws: "general_purpose_ssd"
+        aws: "gp2"
         gcp: "standard_persistent_disk"
-        azure: "standard_persistent_disk"
+        azure: "StandardSSD_LRS"
+
+  variable_components:
+    - name: "Web Traffic"
+      average_vcpu_per_user: 0.0005
+      average_memory_per_user_gb: 0.001
+      storage_per_user_gb: 0.0005
+
+  variable_growth: "linear"
+  scaling_factor: 1

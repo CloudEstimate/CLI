@@ -1,12 +1,21 @@
 {
   "compute": {
+    "c5.xlarge": 0.17,
+    "c5.2xlarge": 0.34,
+    "c5.4xlarge": 0.68,
     "m5.xlarge": 0.192,
     "m5.2xlarge": 0.384,
-    "g4dn.xlarge": 0.526,
-    "c5.xlarge": 0.17,
-    "c5.4xlarge": 0.68,
     "t3a.xlarge": 0.1256,
-    "c5.2xlarge": 0.34
+    "g4dn.xlarge": 0.526
+  },
+  "compute_specs": {
+    "c5.xlarge": {"vcpu": 4, "memory_gb": 8},
+    "c5.2xlarge": {"vcpu": 8, "memory_gb": 16},
+    "c5.4xlarge": {"vcpu": 16, "memory_gb": 32},
+    "m5.xlarge": {"vcpu": 4, "memory_gb": 16},
+    "m5.2xlarge": {"vcpu": 8, "memory_gb": 32},
+    "t3a.xlarge": {"vcpu": 4, "memory_gb": 16},
+    "g4dn.xlarge": {"vcpu": 4, "memory_gb": 16, "gpu_count": 1}
   },
   "gpu": {
     "g4dn.xlarge": 0.526

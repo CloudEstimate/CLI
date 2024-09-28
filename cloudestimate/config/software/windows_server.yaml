@@ -1,22 +1,33 @@
 software:
   name: "Windows Server"
-  description: "Microsoft Windows Server OS for enterprise and cloud infrastructure."
+  description: "Deployment of a Windows Server instance with license."
+
   fixed_components:
-    - name: "Primary Compute Unit"
+    - name: "Windows Server Instance"
       type: "compute"
       compute_requirements:
-        vcpu: 4
-        memory_gb: 16
-        storage_gb: 100
+        vcpu: 8
+        memory_gb: 32
+        storage_gb: 500
       cloud_skus:
-        aws: "m5.xlarge"
-        gcp: "n1-standard-4"
-        azure: "D4s_v3"
+        aws: "m5.2xlarge.windows"
+        gcp: "n1-standard-8-windows"
+        azure: "D8s_v3"
+
     - name: "Storage"
       type: "storage"
       storage_requirements:
-        storage_gb: 100
+        storage_gb: 500
       cloud_skus:
-        aws: "general_purpose_ssd"
+        aws: "gp2"
         gcp: "standard_persistent_disk"
-        azure: "standard_persistent_disk"
+        azure: "StandardSSD_LRS"
+
+  variable_components:
+    - name: "Windows Workload"
+      average_vcpu_per_user: 0.005
+      average_memory_per_user_gb: 0.01
+      storage_per_user_gb: 0.005
+
+  variable_growth: "linear"
+  scaling_factor: 1

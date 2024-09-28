@@ -1,52 +1,85 @@
-# CloudEstimate
+# CloudEstimate CLI
 
-**CloudEstimate** is an open-source CLI tool designed to help you estimate cloud costs for self-hosted software deployments. Whether you're managing your own GitLab, Nvidia, or other software setups on AWS, GCP, or Azure, CloudEstimate provides a fast and straightforward way to calculate potential cloud expenses.
+CloudEstimate CLI is a command-line tool that estimates annual cloud costs across major providers (AWS, GCP, Azure) based on specified software resource requirements and user counts. It helps you plan and budget for cloud deployments by providing detailed cost breakdowns.
 
-## Key Features
+Features:
 
--   Supports multiple cloud providers (AWS, GCP, Azure).
--   Estimates cloud costs based on CPU, memory, storage, and GPU usage.
--   Built-in configurations for common software like GitLab, Nvidia, and more.
--   Extensible through custom YAML configurations for other software.
+-   Estimates compute, storage, and GPU costs.
+-   Supports fixed and variable resource components.
+-   Allows customization through YAML configuration files.
+-   Includes up-to-date pricing data for AWS, GCP, and Azure.
 
 ## Installation
 
-To get started with CloudEstimate, clone the repository and set up a virtual environment:
-
-    git clone https://github.com/CloudEstimate/CLI.git
-    cd CLI
+1.  **Clone the Repository:**
+    
+    `git clone https://www.github.com/CloudEstimate/CLI.git` 
+    
+2.  **Navigate to the Project Directory and Set Up a Virtual Environment:**
+    
+    `cd CLI
     python3 -m venv .venv
-    source .venv/bin/activate
-    pip install -r requirements.txt 
+    source .venv/bin/activate` 
+    
+3.  **Install the Package:**
+    
+    `pip install -e .` 
+    
 
 ## Usage
 
-You can estimate cloud costs using a simple CLI command. For example, to estimate the cost for deploying GitLab for 1000 users with a medium workload:
+Run the `cloudestimate` command with the software name and desired options.
 
-    cloudestimate gitlab --users 1000 --workload medium --activity moderate 
+**Syntax:**
 
-### Example Output
+`cloudestimate <software> [--users <number>] [--show-resources]` 
 
-    Estimated Annual Cloud Costs for GitLab (AWS):
-      Compute: $80,732.16 USD per year
-      Storage: $13,200.00 USD per year
-      Total: $93,932.16 USD per year 
+**Options:**
 
-## Supported Software
+-   `--users`: Specifies the number of users to calculate variable components. Defaults to 0.
+-   `--show-resources`: Displays a detailed breakdown of the estimated resources.
 
--   **GitLab** – Fully configurable for CI/CD runners.
--   **Nvidia** – Includes GPU and memory pricing for high-performance workloads.
--   **Ubuntu, RHEL, Debian, Windows Server** – Default configurations for common OS deployments.
+**Examples:**
 
-## How It Works
+-   Estimate costs for GitLab with 0 users:
+    
+    `cloudestimate gitlab --users 0 --show-resources` 
+    
+-   Estimate costs for GitLab with 1000 users:
 
-CloudEstimate leverages YAML configuration files for each software package, making it easy to update or extend the tool for new software. The tool supports fixed and variable resource requirements, as well as GPU pricing.
+    `cloudestimate gitlab --users 1000 --show-resources` 
+    
 
-### Pricing Sources
+## Adding Software Configurations
 
--   AWS: Uses on-demand pricing for compute, storage, and GPU resources.
--   GCP: Reflects current prices for standard and GPU-enabled instances.
--   Azure: Includes pricing for standard and specialized VM instances.
+To estimate costs for additional software, create a YAML configuration file:
+
+1.  **Create the YAML File:**
+    
+    Place a new YAML file in the `cloudestimate/config/software/` directory. Name it after your software, e.g., `my_software.yaml`.
+    
+2.  **Define Software Specifications:**
+    
+    Include the following sections in your YAML file:
+    
+    -   `fixed_components`: Define fixed resources like compute and storage.
+    -   `variable_components`: Specify per-user resource requirements.
+    -   `gpu_requirements` (optional): Include if your software requires GPUs.
+    -   `variable_growth`: Set to `linear`, `superlinear`, `sublinear`, or `power`.
+    -   `scaling_factor`: A number that influences how variable components scale with users.
+
+## Updating Pricing Data
+
+Pricing data is stored in JSON files within `cloudestimate/cloud_pricing/`:
+
+-   `aws_pricing.json`
+-   `gcp_pricing.json`
+-   `azure_pricing.json`
+
+**To Update Pricing:**
+
+1.  Open the relevant JSON file.
+2.  Update the `compute`, `compute_specs`, `gpu`, and `storage` sections with current pricing and instance specifications.
 
 ## Contributing
 
@@ -58,4 +91,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Maintainer
 
-CloudEstimate was created and is maintained by [Regnard Raquedan](https://github.com/regnardraquedan). Feel free to reach out if you have any questions or feedback.
+CloudEstimate was created and is maintained by [Regnard Raquedan](https://github.com/regnard). Feel free to reach out if you have any questions or feedback.

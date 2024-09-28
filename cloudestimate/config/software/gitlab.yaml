@@ -1,14 +1,14 @@
 software:
   name: "GitLab"
   description: "Self-managed GitLab instance with CI/CD capabilities."
-  
+
   fixed_components:
     - name: "Primary Compute Unit"
       type: "compute"
       compute_requirements:
         vcpu: 8
         memory_gb: 16
-        storage_gb: 500
+        storage_gb: 100
       cloud_skus:
         aws: "c5.2xlarge"
         gcp: "n1-standard-8"
@@ -16,41 +16,17 @@ software:
     - name: "Storage"
       type: "storage"
       storage_requirements:
-        storage_gb: 500
+        storage_gb: 100
       cloud_skus:
         aws: "general_purpose_ssd"
         gcp: "standard_persistent_disk"
-        azure: "ssd_persistent_disk"
+        azure: "StandardSSD_LRS"
 
   variable_components:
-    - name: "CI/CD Runners"
-      type: "variable-compute"
-      user_inputs:
-        users: 1000
-        workload: "medium"
-        activity: "moderate"
-      usage_profiles:
-        medium:
-          light:
-            average_vcpu_per_user: 0.02
-            average_memory_per_user_gb: 0.1
-            storage_per_user_gb: 5
-          moderate:
-            average_vcpu_per_user: 0.04
-            average_memory_per_user_gb: 0.2
-            storage_per_user_gb: 10
-          heavy:
-            average_vcpu_per_user: 0.08
-            average_memory_per_user_gb: 0.4
-            storage_per_user_gb: 20
+    - name: "User Load"
+      average_vcpu_per_user: 0.5
+      average_memory_per_user_gb: 1
+      storage_per_user_gb: 5
 
-  # Add GPU requirements (optional)
-  gpu_requirements:
-    - name: "GPU for CI/CD Runners"
-      gpu_requirements:
-        gpu_count: 1
-        gpu_memory_gb: 16
-      cloud_skus:
-        aws: "g4dn.xlarge"
-        gcp: "nvidia-t4"
-        azure: "NC4as_T4_v3"
+  variable_growth: "linear"  # Options: linear, superlinear, sublinear, power
+  scaling_factor: 1  # Scaling factor for the variable growth

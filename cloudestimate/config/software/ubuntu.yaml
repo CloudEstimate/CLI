@@ -1,15 +1,16 @@
 software:
-  name: "Ubuntu"
-  description: "Popular Linux OS for cloud computing and servers."
+  name: "Ubuntu Application Server"
+  description: "Deployment of an Ubuntu-based application server."
+
   fixed_components:
-    - name: "Primary Compute Unit"
+    - name: "Application Server Instance"
       type: "compute"
       compute_requirements:
         vcpu: 4
-        memory_gb: 16
+        memory_gb: 8
         storage_gb: 100
       cloud_skus:
-        aws: "m5.xlarge"
+        aws: "m5.large"
         gcp: "n1-standard-4"
         azure: "D4s_v3"
     - name: "Storage"
@@ -17,6 +18,15 @@ software:
       storage_requirements:
         storage_gb: 100
       cloud_skus:
-        aws: "general_purpose_ssd"
+        aws: "gp2"
         gcp: "standard_persistent_disk"
-        azure: "standard_persistent_disk"
+        azure: "StandardSSD_LRS"
+
+  variable_components:
+    - name: "Application Load"
+      average_vcpu_per_user: 0.001
+      average_memory_per_user_gb: 0.002
+      storage_per_user_gb: 0.001
+
+  variable_growth: "linear"
+  scaling_factor: 1

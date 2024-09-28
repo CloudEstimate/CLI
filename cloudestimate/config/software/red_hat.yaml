@@ -1,22 +1,33 @@
 software:
-  name: "Red Hat Enterprise Linux"
-  description: "Enterprise Linux OS for servers and cloud infrastructure."
+  name: "Red Hat Enterprise Linux Server"
+  description: "Deployment of a Red Hat Enterprise Linux server with subscription."
+
   fixed_components:
-    - name: "Primary Compute Unit"
+    - name: "Enterprise Server Instance"
       type: "compute"
       compute_requirements:
         vcpu: 4
         memory_gb: 16
-        storage_gb: 100
+        storage_gb: 200
       cloud_skus:
-        aws: "m5.xlarge"
-        gcp: "n1-standard-4"
+        aws: "m5.xlarge.rhel"
+        gcp: "n1-standard-4-rhel"
         azure: "D4s_v3"
+
     - name: "Storage"
       type: "storage"
       storage_requirements:
-        storage_gb: 100
+        storage_gb: 200
       cloud_skus:
-        aws: "general_purpose_ssd"
+        aws: "gp2"
         gcp: "standard_persistent_disk"
-        azure: "standard_persistent_disk"
+        azure: "StandardSSD_LRS"
+
+  variable_components:
+    - name: "Enterprise Workload"
+      average_vcpu_per_user: 0.002
+      average_memory_per_user_gb: 0.004
+      storage_per_user_gb: 0.002
+
+  variable_growth: "linear"
+  scaling_factor: 1

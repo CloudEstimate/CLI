@@ -1,0 +1,70 @@
+software:
+  name: BlueCat Networks Address Manager
+  description: "A tool for managing IP addresses, DNS, and DHCP services."
+  as_of: 2024-09-21
+  fixed_components:
+    - name: Primary Compute Unit
+      type: compute
+      compute_requirements:
+        vcpu: 16
+        memory_gb: 64
+        storage_gb: 320
+      cloud_skus:
+        aws: c5.4xlarge
+        gcp: c2-standard-16
+        azure: F16s_v2
+    - name: Storage
+      type: storage
+      storage_requirements:
+        storage_gb: 320
+      cloud_skus:
+        aws: standard_persistent_disk
+        gcp: standard_persistent_disk
+        azure: standard_persistent_disk
+  variable_components:
+    - name: Load Balancer
+      type: variable-compute
+      user_inputs:
+        users: 1
+        workload: medium
+        activity: moderate
+      usage_profiles:
+        simple:
+          light:
+            average_vcpu_per_user: 0.001
+            average_memory_per_user_gb: 0.005
+            storage_per_user_gb: 0.5
+          moderate:
+            average_vcpu_per_user: 0.000000000
+            average_memory_per_user_gb: 0.001
+            storage_per_user_gb: 1
+          heavy:
+            average_vcpu_per_user: 0.004
+            average_memory_per_user_gb: 0.02
+            storage_per_user_gb: 2
+        medium:
+          light:
+            average_vcpu_per_user: 0.002
+            average_memory_per_user_gb: 0.01
+            storage_per_user_gb: 1
+          moderate:
+            average_vcpu_per_user: 0.0000004
+            average_memory_per_user_gb: 0.02
+            storage_per_user_gb: 2
+          heavy:
+            average_vcpu_per_user: 0.008
+            average_memory_per_user_gb: 0.04
+            storage_per_user_gb: 4
+        complex:
+          light:
+            average_vcpu_per_user: 0.005
+            average_memory_per_user_gb: 0.025
+            storage_per_user_gb: 2
+          moderate:
+            average_vcpu_per_user: 0.001
+            average_memory_per_user_gb: 0.005
+            storage_per_user_gb: 4
+          heavy:
+            average_vcpu_per_user: 0.02
+            average_memory_per_user_gb: 0.1
+            storage_per_user_gb: 8

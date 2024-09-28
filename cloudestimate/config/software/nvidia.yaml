@@ -1,89 +1,42 @@
 software:
-  name: "Nvidia GPU"
-  description: "Nvidia GPU instance for AI/ML workloads."
+  name: "NVIDIA Deep Learning"
+  description: "Deployment of NVIDIA GPU-accelerated machine learning workloads."
+
   fixed_components:
-    - name: "Primary Compute Unit"
+    - name: "GPU Compute Instance"
       type: "compute"
       compute_requirements:
-        vcpu: 4
-        memory_gb: 16
-        storage_gb: 128
+        vcpu: 16
+        memory_gb: 64
+        storage_gb: 1000
       cloud_skus:
-        aws: "g4dn.xlarge"
-        gcp: "g2-standard-4"
-        azure: "NC4as_T4_v3"
+        aws: "p3.2xlarge"
+        gcp: "n1-highmem-16"
+        azure: "NC6s_v3"
     - name: "Storage"
       type: "storage"
       storage_requirements:
-        storage_gb: 128
+        storage_gb: 1000
       cloud_skus:
-        aws: "general_purpose_ssd"
+        aws: "provisioned_iops_ssd"
         gcp: "ssd_persistent_disk"
-        azure: "ssd_persistent_disk"
+        azure: "PremiumSSD_LRS"
 
   gpu_requirements:
-    - name: "GPU Resources"
+    - name: "NVIDIA GPUs"
       gpu_requirements:
         gpu_count: 1
         gpu_memory_gb: 16
       cloud_skus:
-        aws: "g4dn.xlarge"
-        gcp: "g2-standard-4"
-        azure: "NC4as_T4_v3"
+        aws: "Tesla V100"
+        gcp: "nvidia-tesla-v100"
+        azure: "NVIDIA V100"
 
   variable_components:
-    - name: "AI/ML Jobs"
-      type: "variable-compute"
-      user_inputs:
-        users: 1000
-        workload: "medium"
-        activity: "moderate"
-      usage_profiles:
-        simple:
-          light:
-            average_vcpu_per_user: 0.01
-            average_memory_per_user_gb: 0.05
-            storage_per_user_gb: 2
-            average_gpu_per_user: 0.01
-          moderate:
-            average_vcpu_per_user: 0.02
-            average_memory_per_user_gb: 0.1
-            storage_per_user_gb: 5
-            average_gpu_per_user: 0.02
-          heavy:
-            average_vcpu_per_user: 0.04
-            average_memory_per_user_gb: 0.2
-            storage_per_user_gb: 10
-            average_gpu_per_user: 0.04
-        medium:
-          light:
-            average_vcpu_per_user: 0.02
-            average_memory_per_user_gb: 0.1
-            storage_per_user_gb: 5
-            average_gpu_per_user: 0.02
-          moderate:
-            average_vcpu_per_user: 0.04
-            average_memory_per_user_gb: 0.2
-            storage_per_user_gb: 10
-            average_gpu_per_user: 0.04
-          heavy:
-            average_vcpu_per_user: 0.08
-            average_memory_per_user_gb: 0.4
-            storage_per_user_gb: 20
-            average_gpu_per_user: 0.08
-        complex:
-          light:
-            average_vcpu_per_user: 0.05
-            average_memory_per_user_gb: 0.25
-            storage_per_user_gb: 10
-            average_gpu_per_user: 0.05
-          moderate:
-            average_vcpu_per_user: 0.1
-            average_memory_per_user_gb: 0.5
-            storage_per_user_gb: 20
-            average_gpu_per_user: 0.1
-          heavy:
-            average_vcpu_per_user: 0.2
-            average_memory_per_user_gb: 1
-            storage_per_user_gb: 40
-            average_gpu_per_user: 0.2
+    - name: "Model Training Load"
+      average_vcpu_per_user: 2
+      average_memory_per_user_gb: 8
+      storage_per_user_gb: 50
+
+  variable_growth: "superlinear"  # Options: linear, superlinear, sublinear, power
+  scaling_factor: 1.05  # Scaling factor for the variable growth
