@@ -6,7 +6,8 @@
     "m5.xlarge": 0.192,
     "m5.2xlarge": 0.384,
     "t3a.xlarge": 0.1256,
-    "g4dn.xlarge": 0.526
+    "g4dn.xlarge": 0.526,
+    "p3.2xlarge": 3.06
   },
   "compute_specs": {
     "c5.xlarge": {"vcpu": 4, "memory_gb": 8},
@@ -15,14 +16,17 @@
     "m5.xlarge": {"vcpu": 4, "memory_gb": 16},
     "m5.2xlarge": {"vcpu": 8, "memory_gb": 32},
     "t3a.xlarge": {"vcpu": 4, "memory_gb": 16},
-    "g4dn.xlarge": {"vcpu": 4, "memory_gb": 16, "gpu_count": 1}
+    "g4dn.xlarge": {"vcpu": 4, "memory_gb": 16, "gpu_count": 1},
+    "p3.2xlarge": {"vcpu": 8, "memory_gb": 61, "gpu_count": 1}
   },
   "gpu": {
-    "g4dn.xlarge": 0.526
+    "Tesla V100": 3.06
   },
   "storage": {
+    "gp2": 0.10,
     "general_purpose_ssd": 0.08,
     "standard_persistent_disk": 0.045,
-    "balanced_persistent_disk": 0.125
+    "balanced_persistent_disk": 0.125,
+    "provisioned_iops_ssd": 0.125
   }
 }

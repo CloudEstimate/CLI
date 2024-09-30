@@ -154,11 +154,16 @@ def calculate_cloud_costs(total_vcpu, total_memory_gb, total_storage_gb, total_g
         # Calculate GPU cost if applicable
         gpu_cost = 0
         if gpu_sku:
-            price_per_gpu_instance_hour = pricing_data['compute'][gpu_sku]
-            gpu_instance_specs = pricing_data['compute_specs'][gpu_sku]
-            gpu_instance_gpu_count = gpu_instance_specs.get('gpu_count', 1)
-            num_gpu_instances = math.ceil(total_gpus / gpu_instance_gpu_count)
-            gpu_cost = num_gpu_instances * price_per_gpu_instance_hour * 24 * 365
+            price_per_gpu_hour = pricing_data['gpu'][gpu_sku]
+            gpu_instance_specs = pricing_data['compute_specs'][compute_sku]
+            gpu_instance_gpu_count = gpu_instance_specs.get('gpu_count', 0)
+
+            if gpu_instance_gpu_count > 0:
+                num_gpu_instances = math.ceil(total_gpus / gpu_instance_gpu_count)
+                gpu_cost = num_gpu_instances * price_per_gpu_hour * 24 * 365
+            else:
+                # If the compute instance does not include GPUs, assume GPU pricing is separate
+                gpu_cost = total_gpus * price_per_gpu_hour * 24 * 365
 
         total_cost = compute_cost + storage_cost + gpu_cost
 

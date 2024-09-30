@@ -4,6 +4,7 @@
     "F8s_v2": 0.338,
     "D4s_v3": 0.152,
     "D8s_v3": 0.304,
+    "NC6s_v3": 1.35,
     "NC4as_T4_v3": 0.9,
     "F16s_v2": 0.611,
     "D4as_v4": 0.148
@@ -13,12 +14,13 @@
     "F8s_v2": {"vcpu": 8, "memory_gb": 16},
     "D4s_v3": {"vcpu": 4, "memory_gb": 16},
     "D8s_v3": {"vcpu": 8, "memory_gb": 32},
+    "NC6s_v3": {"vcpu": 6, "memory_gb": 112, "gpu_count": 1},
     "NC4as_T4_v3": {"vcpu": 4, "memory_gb": 28, "gpu_count": 1},
     "F16s_v2": {"vcpu": 16, "memory_gb": 32},
     "D4as_v4": {"vcpu": 4, "memory_gb": 16}
   },
   "gpu": {
-    "NC4as_T4_v3": 0.9
+    "NVIDIA V100": 1.35
   },
   "storage": {
     "StandardSSD_LRS": 0.10,
