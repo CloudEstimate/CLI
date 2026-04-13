@@ -14,6 +14,7 @@ setup(
     install_requires=[
         'click',
         'pyyaml',
+        'rich',
     ],
     entry_points={
         'console_scripts': [

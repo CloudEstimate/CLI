@@ -1,59 +1,40 @@
-# Contributing to CloudEstimate
+# Contributing to CloudEstimate CLI
 
-Hi! 👋 I’m **Regnard Raquedan**, and I’m thrilled that you’re interested in contributing to **CloudEstimate**. This project is open source, and we encourage contributions from the community. Whether you want to improve existing software configs or add new ones, your help is greatly appreciated!
+Thanks for helping improve CloudEstimate.
 
-## How to Contribute
+This CLI is now aligned with the web app's curated ISV catalog, so the source of truth lives in the web workspace:
 
-### 1. Fork the Repository
+- `web/src/content/isvs/*.yaml` for workload definitions
+- `web/src/data/generated/pricing/*.json` for cached pricing snapshots
+- `web/functions/generated/isv-catalog.json` and `web/functions/generated/shape-mappings.json` for the generated artifacts the CLI reads
 
--   First, fork this repository to your own GitHub account and clone the project to your local machine.
+## Recommended Workflow
 
-    `git clone https://github.com/<your-username>/CLI.git` 
+1. Update the workload or pricing data in the web workspace.
+2. Regenerate the generated artifacts if needed.
+3. Run the CLI from `CLI/` and verify `list`, `estimate`, and `compare` output.
+4. Open a pull request with a clear note about the catalog or pricing change.
 
-### 2. Work on Software Configs
+## Validation Tips
 
-We're specifically looking for contributions to the software YAML configuration files for different self-managed/hosted applications. Each software’s resource usage (vCPU, memory, storage) should reflect real-world deployment scenarios across cloud platforms (AWS, GCP, Azure).
+Useful checks while iterating:
 
-#### Steps:
+```bash
+cd web
+npm run validate:isvs
+npm run sync:functions-data
 
--   Navigate to the `config/software/` directory.
--   Create or modify YAML files for software you'd like to contribute to.
--   Make sure to define **fixed** and **variable** resource components as seen in the existing configurations (e.g., `gitlab.yaml`, `ubuntu.yaml`).
+cd ../CLI
+python3 -m cloudestimate.cli list
+python3 -m cloudestimate.cli estimate gitlab
+python3 -m cloudestimate.cli compare gitlab
+```
 
-### 3. Submit a Pull Request
+## What to Watch For
 
-Once you're satisfied with your changes, submit a pull request (PR) to the **main** branch. We’ll review it as soon as possible!
+- Keep reference architecture citations current and explicit.
+- Keep size tiers consistent with the web sizing pages.
+- Make sure pricing snapshots and share URLs still line up with the web routes.
+- Avoid changing the CLI output contract unless the web docs are changing with it.
 
-### YAML Contribution Example:
-
-    software:
-      name: "YourSoftware"
-      description: "Brief description of the software."
-      fixed_components:
-        - name: "Primary Compute Unit"
-          type: "compute"
-          compute_requirements:
-            vcpu: 4
-            memory_gb: 16
-            storage_gb: 200
-      variable_components:
-        - name: "Additional Load"
-          type: "variable-compute"
-          user_inputs:
-            users: 1000
-            workload: "medium"
-            activity: "moderate"
-          usage_profiles:
-            medium:
-              light:
-                average_vcpu_per_user: 0.02
-                average_memory_per_user_gb: 0.1
-                storage_per_user_gb: 5 
-
-### Code of Conduct
-
-Be kind, collaborative, and respectful. All contributions are welcome, regardless of skill level.
-
-## Questions?
-
-You are welcome to open an issue if you have any questions. Thanks for your interest, and happy coding! 🚀
+If you're unsure how a workload should be modeled, follow the patterns in the existing web ISV catalog and methodology pages.
