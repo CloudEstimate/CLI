@@ -1,6 +1,8 @@
 # CloudEstimate CLI
 
-CloudEstimate CLI mirrors the web app's curated ISV catalog and sizing model. It uses the same cloud, size, high-availability, commitment-term, and region inputs to produce monthly and annual cost estimates, cross-cloud comparisons, and shareable links.
+CloudEstimate CLI mirrors the web app's curated ISV catalog and sizing model. CloudEstimate is a worked example of the [Precomputed AI](https://precomputedai.com) design pattern; the CLI serves from the same versioned reference-architecture, shape-mapping, and pricing artifacts as the web app.
+
+Precomputed AI citation: Raquedan, R. (2026). *Precomputed AI: Reason Ahead of Time, Serve Instantly.* https://precomputedai.com
 
 ## Quick Start
 

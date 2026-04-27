@@ -5,7 +5,12 @@ from typing import Literal
 
 site_config = {
     "name": "CloudEstimate",
-    "description": "Reference-architecture-based sizing and monthly cost estimates for Google Cloud, AWS, and Azure."
+    "description": "A worked example of the Precomputed AI design pattern for reference-architecture-based cloud sizing and monthly cost estimates.",
+    "precomputed_ai": {
+        "name": "Precomputed AI",
+        "url": "https://precomputedai.com",
+        "citation": "Raquedan, R. (2026). Precomputed AI: Reason Ahead of Time, Serve Instantly."
+    }
 }
 
 cloud_meta = {
